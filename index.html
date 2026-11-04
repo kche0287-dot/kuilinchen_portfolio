@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Colin's Portfolio</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+
+<style>
+/* Monochrome. Weight, size and space carry the hierarchy, not colour. */
+:root{
+  --bg:#FFFFFF; --ink:#111214; --mut:#6E7276;
+  --line:#E6E6E6; --sunk:#F6F6F6;
+  --display:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --body:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --bar:66px;
+  /* one column width and one gutter, both fluid, used by the bar and the page alike */
+  --wide:clamp(1060px,86vw,1240px);
+  --gut:clamp(24px,4.4vw,60px);
+  /* one multiplier scales every fixed type size with the viewport */
+  --s:clamp(.97px,.01136vw + .9291px,1.12px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E0F10; --ink:#F1F1F2; --mut:#9A9EA2;
+  --line:#26282A; --sunk:#17181A; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0E0F10; --ink:#F1F1F2; --mut:#9A9EA2;
+  --line:#26282A; --sunk:#17181A; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+     font-size:calc(16.5 * var(--s));line-height:1.68;-webkit-text-size-adjust:100%}
+a{color:var(--ink)}
+:focus-visible{outline:1.5px solid var(--ink);outline-offset:3px;border-radius:1px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.gut{padding-left:max(var(--gut),env(safe-area-inset-left,0px));
+     padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+.col{max-width:var(--wide);margin:0 auto}
+
+/* ── bar ─────────────────────────────────────────────── */
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg);
+  border-bottom:1px solid var(--line)}
+.barin{display:flex;align-items:center;justify-content:space-between;gap:20px;
+  height:var(--bar);max-width:var(--wide);margin:0 auto}
+.mark{font-family:var(--display);font-weight:700;font-size:calc(15 * var(--s));letter-spacing:-.005em;
+  color:var(--ink);text-decoration:none;white-space:nowrap}
+
+nav.main{display:flex;align-items:center;gap:2px}
+nav.main a,.ddbtn{font-family:var(--display);font-size:calc(13.5 * var(--s));font-weight:400;color:var(--mut);
+  text-decoration:none;padding:8px 13px;background:none;border:0;cursor:pointer;
+  white-space:nowrap;line-height:1.2;transition:color .14s}
+nav.main a:hover,.ddbtn:hover{color:var(--ink)}
+nav.main a[aria-current="page"],.ddbtn.on{color:var(--ink);font-weight:600}
+
+.dd{position:relative}
+.ddbtn{display:inline-flex;align-items:center;gap:6px}
+.ddbtn::after{content:"";width:5px;height:5px;border-right:1.4px solid currentColor;
+  border-bottom:1.4px solid currentColor;transform:rotate(45deg) translateY(-2px)}
+.ddmenu{position:absolute;right:0;top:calc(100% + 6px);min-width:318px;background:var(--bg);
+  border:1px solid var(--line);padding:8px;display:none}
+.ddmenu.open{display:block}
+.ddmenu a{display:grid;grid-template-columns:30px 1fr;gap:6px;padding:9px 10px;
+  font-family:var(--display);font-size:calc(13.5 * var(--s));color:var(--ink);text-decoration:none;
+  font-weight:400;transition:background .14s}
+.ddmenu a:hover{background:var(--sunk)}
+.ddmenu a b{color:var(--mut);font-weight:600;font-size:calc(11.5 * var(--s));letter-spacing:.06em;padding-top:2px}
+.ddsep{height:1px;background:var(--line);margin:7px 4px}
+
+.burger{display:none;background:none;border:1px solid var(--line);width:40px;height:36px;
+  cursor:pointer;align-items:center;justify-content:center;padding:0}
+.burger i{display:block;width:16px;height:1.4px;background:var(--ink);position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;width:16px;height:1.4px;background:var(--ink)}
+.burger i::before{top:-5px} .burger i::after{top:5px}
+
+@media (max-width:900px){
+  nav.main{display:none;position:absolute;left:0;right:0;top:var(--bar);flex-direction:column;
+    align-items:stretch;gap:0;background:var(--bg);border-bottom:1px solid var(--line);
+    padding:6px max(var(--gut),env(safe-area-inset-left,0px)) 16px;
+    max-height:calc(100vh - var(--bar));overflow-y:auto}
+  nav.main.open{display:flex}
+  nav.main a,.ddbtn{padding:12px 4px;font-size:calc(15 * var(--s));text-align:left}
+  .dd{position:static}
+  .ddbtn{width:100%;justify-content:space-between}
+  .ddmenu{position:static;min-width:0;border:0;border-left:1px solid var(--line);
+    margin:0 0 8px 6px;padding:0 0 0 12px}
+  .burger{display:flex}
+}
+
+/* ── pages ───────────────────────────────────────────── */
+.page{display:none;padding-block:clamp(54px,6.6vw,84px) clamp(88px,11vw,140px)}
+.page.active{display:block}
+
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(31px,4.6vw,46px);font-weight:700;letter-spacing:-.025em;line-height:1.08}
+h2{font-size:calc(15 * var(--s));font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);
+   margin-top:clamp(50px,6.4vw,76px);padding-bottom:14px;border-bottom:1px solid var(--line)}
+h3{font-size:calc(17 * var(--s));font-weight:600;margin-top:30px}
+h4{font-family:var(--display);font-size:calc(11 * var(--s));font-weight:600;letter-spacing:.13em;
+   text-transform:uppercase;color:var(--mut);margin:34px 0 0}
+p{margin:0 0 17px}
+
+.eyebrow{font-family:var(--display);font-size:calc(11 * var(--s));font-weight:600;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--mut)}
+.lede{font-size:clamp(17px,1.8vw,19.5px);color:var(--ink);max-width:60ch;margin-top:17px;line-height:1.6}
+
+.page:not(#page-about) > .eyebrow{display:block;text-align:center}
+.page:not(#page-about) > h1{text-align:center;margin-top:13px}
+.page:not(#page-about) > .lede,
+.page:not(#page-about) > .deck{text-align:center;margin-left:auto;margin-right:auto}
+.page:not(#page-about) > .deck{max-width:60ch;color:var(--ink);font-size:calc(16 * var(--s));margin-top:15px}
+
+/* ── home ────────────────────────────────────────────── */
+#page-about{text-align:center;padding-block:clamp(64px,10vw,128px) clamp(96px,12vw,140px)}
+.big{font-family:var(--display);font-weight:800;letter-spacing:-.018em;line-height:.9;
+  font-size:clamp(54px,12.8vw,146px);margin:0}
+.sub{font-family:var(--body);font-style:italic;font-weight:400;color:var(--ink);
+  font-size:clamp(19px,3.6vw,41px);line-height:1.16;margin:.2em 0 0}
+.hr{display:block;width:40px;height:1px;background:var(--ink);margin:clamp(42px,6.5vw,64px) auto}
+.intro{font-size:calc(18.5 * var(--s));line-height:1.72;max-width:52ch;margin:0 auto;text-wrap:balance}
+.intro + .intro{margin-top:10px;color:var(--ink);font-size:calc(17 * var(--s))}
+.intro strong{font-family:var(--display);font-weight:700;font-size:.96em}
+
+.video{margin:clamp(48px,7vw,72px) auto 0;border:1px solid var(--line);max-width:720px;
+  text-align:left;background:var(--bg)}
+.video .frame{aspect-ratio:16/9;background:var(--sunk);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
+.video .frame .ic{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center}
+.video .frame .ic::after{content:"";border-left:11px solid var(--mut);
+  border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+.video .frame p{font-family:var(--display);font-size:calc(13 * var(--s));color:var(--mut);margin:0;letter-spacing:.02em}
+.video .cap{padding:14px 18px;font-family:var(--display);font-size:calc(12.5 * var(--s));color:var(--mut);
+  border-top:1px solid var(--line)}
+.video iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+
+/* ── embedded board ──────────────────────────────────── */
+.board{margin-top:18px;border:1px solid var(--line);background:var(--sunk)}
+.board iframe{display:block;width:100%;height:clamp(440px,64vh,660px);border:0;background:#fff}
+.fallback{margin:18px auto 0;text-align:center;font-family:var(--display);
+  font-size:calc(12.5 * var(--s));line-height:1.7;color:var(--mut);max-width:62ch}
+.fallback a{color:var(--mut);overflow-wrap:anywhere}
+.fallback a:hover{color:var(--ink)}
+
+/* ── resource index: a list, not cards ───────────────── */
+.index{margin-top:10px;border-top:1px solid var(--line)}
+.ihead,.row{display:grid;gap:20px;
+  grid-template-columns:46px minmax(0,1fr) calc(152 * var(--s)) calc(236 * var(--s))}
+.ihead{padding:13px 4px;border-bottom:1px solid var(--line);
+  font-family:var(--display);font-size:calc(10.5 * var(--s));font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mut)}
+.row{align-items:baseline;padding:26px 4px;border-bottom:1px solid var(--line);
+  text-decoration:none;color:inherit;transition:background .16s,padding-left .16s}
+.row:hover{background:var(--sunk);padding-left:12px}
+.rn{font-family:var(--display);font-size:calc(12 * var(--s));font-weight:600;letter-spacing:.1em;color:var(--mut)}
+.rt b{display:block;font-family:var(--display);font-size:calc(20 * var(--s));font-weight:600;
+  letter-spacing:-.012em;line-height:1.25}
+.rt i{display:block;font-style:normal;font-family:var(--body);font-size:calc(16 * var(--s));color:var(--ink);
+  margin-top:5px;line-height:1.5}
+.ru,.rp{font-family:var(--display);font-size:calc(12.5 * var(--s));color:var(--mut);letter-spacing:.005em;line-height:1.52}
+.draft{display:inline-block;font-family:var(--display);font-size:calc(10 * var(--s));font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--mut);border:1px solid var(--line);
+  padding:2px 6px;margin-left:10px;vertical-align:3px}
+@media (max-width:1000px){
+  .ihead{display:none}
+  .row{grid-template-columns:40px minmax(0,1fr);gap:16px;padding:22px 2px}
+  .ru,.rp{grid-column:2}
+  .rt i,.ru,.rp{max-width:58ch}
+  .ru{margin-top:12px} .rp{margin-top:7px}
+  .ru::before,.rp::before{display:block;font-family:var(--display);font-size:calc(9.5 * var(--s));font-weight:600;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--mut);margin-bottom:1px}
+  .ru::before{content:"Use in lesson"} .rp::before{content:"Pedagogy"}
+}
+
+/* ── metadata strip on resource pages ────────────────── */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:28px 36px;
+  margin-top:50px;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts div{min-width:0}
+.facts dt{font-family:var(--display);font-size:calc(10.5 * var(--s));font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mut);margin:0 0 7px}
+.facts dd{margin:0;font-size:calc(15.5 * var(--s));line-height:1.5}
+
+/* ── pull quote: type and space, no box ──────────────── */
+.quote{margin:72px auto;text-align:center}
+.quote p{font-family:var(--display);font-size:clamp(21px,2.9vw,30px);font-weight:600;
+  line-height:1.3;letter-spacing:-.018em;margin:0 auto;max-width:19em;text-wrap:balance}
+
+/* ── slots & annotation ──────────────────────────────── */
+.slot{margin-top:18px;border:1px dashed var(--line);padding:22px 24px;background:var(--bg)}
+.slot .t{font-family:var(--display);font-size:calc(10.5 * var(--s));font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mut);margin:0 0 9px}
+.slot p{font-size:calc(15 * var(--s));color:var(--mut);margin:0;line-height:1.55}
+.slot code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:calc(12.5 * var(--s));
+  background:var(--sunk);padding:2px 6px;color:var(--ink)}
+
+/* ── a resource rendered in full ─────────────────────── */
+.rbody{max-width:812px;margin:0 auto}
+.rbody > p{max-width:66ch;font-size:calc(16.5 * var(--s))}
+.rbody h3{margin-top:44px}
+.rbody h3:first-child{margin-top:26px}
+.muted{color:var(--mut)}
+
+.tbl{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:16px;
+  font-size:calc(14.5 * var(--s));line-height:1.52}
+.tbl th,.tbl td{text-align:left;vertical-align:top;padding:11px 16px 11px 0;
+  border-bottom:1px solid var(--line);overflow-wrap:break-word}
+.tbl th{font-family:var(--display);font-size:calc(10.5 * var(--s));font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--ink);padding-bottom:9px}
+.tbl th:last-child,.tbl td:last-child{padding-right:0}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .k{font-family:var(--display);font-weight:600;font-size:calc(12.5 * var(--s));letter-spacing:.04em}
+.tbl .ty{color:var(--mut);font-size:calc(13.5 * var(--s))}
+.tbl td.blank{background:var(--sunk)}
+.tbl .cr{font-family:var(--display);font-weight:600;font-size:calc(13.5 * var(--s))}
+.tbl .j{font-family:var(--display);font-weight:600;font-size:calc(13.5 * var(--s));white-space:nowrap}
+.cap{margin-top:12px;font-size:calc(13.5 * var(--s));color:var(--mut);line-height:1.58;max-width:68ch}
+.cap b{font-family:var(--display);font-weight:600;color:var(--ink);font-size:calc(12.5 * var(--s))}
+.linkcard{display:block;margin-top:20px;border:1px solid var(--line);padding:20px 22px;
+  text-decoration:none;color:inherit;transition:background .16s,padding-left .16s}
+.linkcard:hover{background:var(--sunk);padding-left:30px}
+.linkcard b{display:block;font-family:var(--display);font-size:calc(16 * var(--s));font-weight:600;letter-spacing:-.005em}
+.linkcard i{display:block;font-style:normal;font-family:var(--body);font-size:calc(15 * var(--s));
+  color:var(--mut);margin-top:7px;line-height:1.5}
+.linkcard span{display:block;font-family:var(--display);font-size:calc(12 * var(--s));color:var(--mut);
+  margin-top:9px;overflow-wrap:anywhere;letter-spacing:.01em}
+.callout{margin-top:22px;max-width:66ch;border-left:2px solid var(--ink);padding:1px 0 1px 20px}
+.callout b{display:block;font-family:var(--display);font-size:calc(15 * var(--s));font-weight:600}
+.callout p{margin:6px 0 0;font-size:calc(16 * var(--s))}
+.tbl.grid{table-layout:fixed}
+.tbl.grid th,.tbl.grid td{border:1px solid var(--line);padding:9px 11px}
+.tbl.grid th{border-bottom:1px solid var(--ink)}
+.tbl.grid td.f{height:46px}
+.tbl.grid tr:last-child td{border-bottom:1px solid var(--line)}
+
+.q{margin-top:24px;}
+.q b{display:block;font-family:var(--display);font-size:calc(15 * var(--s));font-weight:600;letter-spacing:.005em}
+.q p{margin:6px 0 0;max-width:66ch;font-size:calc(16 * var(--s))}
+.bul{margin:14px 0 0;padding:0;list-style:none}
+.bul li{position:relative;padding-left:20px;margin-bottom:11px;max-width:66ch;font-size:calc(16 * var(--s));line-height:1.62}
+.bul li::before{content:"";position:absolute;left:2px;top:.7em;width:4px;height:4px;
+  border-radius:50%;background:var(--mut)}
+
+@media (max-width:760px){
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl thead{display:none}
+  .tbl tr{border-bottom:1px solid var(--line);padding:14px 0}
+  .tbl tr:last-child{border-bottom:none}
+  .tbl td{border:none;padding:0 0 6px}
+  .tbl td:last-child{padding-bottom:0}
+  .tbl .k{display:block;color:var(--mut);margin-bottom:3px}
+  .tbl td.blank{min-height:26px;margin-bottom:6px}
+  .tbl .j{white-space:normal}
+  .tbl td[data-l]::before{display:block;font-family:var(--display);font-size:calc(9.5 * var(--s));font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-bottom:3px;content:attr(data-l)}
+  .tbl.grid tr{border:1px solid var(--line);padding:12px;margin-bottom:10px}
+  .tbl.grid tr:last-child{margin-bottom:0}
+  .tbl.grid td{border:none;padding:0}
+  .tbl.grid td.f{height:auto;min-height:38px;border:1px solid var(--line);
+    padding:6px 9px;margin-bottom:8px}
+  .tbl.grid td.f3,.tbl.grid td.f:last-child{margin-bottom:0}
+}
+
+/* ── a post, set as a post ───────────────────────────── */
+.post{max-width:calc(640 * var(--s));margin:28px auto 0}
+#page-public .refs{max-width:calc(640 * var(--s))}
+.post h3.ptitle{font-family:var(--display);font-size:clamp(23px,2.7vw,32px);font-weight:700;
+  letter-spacing:-.022em;line-height:1.16;margin:0;text-wrap:balance;text-align:left}
+.post .by{font-family:var(--display);font-size:calc(12 * var(--s));letter-spacing:.11em;
+  text-transform:uppercase;color:var(--mut);margin:15px 0 0;text-align:left;hyphens:none}
+.post .by + p{margin-top:30px}
+.post p{margin:0 0 18px;font-size:calc(17 * var(--s));line-height:1.74;
+  text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.post .step b{font-family:var(--display);font-weight:600;font-size:.95em}
+.post .lead{margin-bottom:15px}
+.post .step{margin-bottom:15px}
+.post .end{margin-bottom:0}
+
+.annot{margin:24px auto 0;max-width:812px;font-size:calc(17 * var(--s));line-height:1.72}
+.annot p{max-width:66ch}
+.annot p:last-child{margin-bottom:0}
+
+.refs{margin:22px auto 0;font-size:calc(14.5 * var(--s));color:var(--ink);line-height:1.62;max-width:812px}
+.refs p{margin:0 0 9px;padding-left:28px;text-indent:-28px}
+.refs a{color:var(--mut);overflow-wrap:anywhere;text-decoration:underline;text-underline-offset:2px}
+.refs a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<header class="bar gut">
+  <div class="barin">
+    <a class="mark" href="#about">Colin&rsquo;s Portfolio</a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><i></i></button>
+    <nav class="main" id="nav">
+      <a href="#about" data-nav="about">About Me</a>
+      <a href="#curriculum" data-nav="curriculum">Curriculum Map</a>
+      <div class="dd">
+        <button class="ddbtn" id="ddbtn" aria-expanded="false">Resources</button>
+        <div class="ddmenu" id="ddmenu">
+          <a href="#resources"><b>All</b><span>Overview</span></a>
+          <div class="ddsep"></div>
+        </div>
+      </div>
+      <a href="#reflection" data-nav="reflection">Teaching Reflection</a>
+      <a href="#public" data-nav="public">Public-Facing Contribution</a>
+      <a href="#others" data-nav="others">Others</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="gut"><div class="col">
+
+<!-- ══ ABOUT ══ -->
+<section class="page" id="page-about">
+  <h1 class="big">Portfolio</h1>
+  <p class="sub">of Learning and Resources</p>
+
+  <span class="hr"></span>
+
+  <p class="intro"><strong>Kuilin (Colin) Chen</strong>, a future teacher specialising in digital education.</p>
+  <p class="intro">Please visit the self-introduction video for more information.</p>
+
+  <div class="video">
+    <iframe src="https://drive.google.com/file/d/13LXifINMg0kk1ltQy56f55ssc8QO4kFs/preview"
+            title="Self-introduction video" loading="lazy"
+            allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <div class="cap">Kuilin (Colin) Chen &middot; 1&ndash;2 minutes</div>
+  </div>
+  <p class="fallback">If the video does not load here, please open it directly on Google Drive.<br>
+    <a href="https://drive.google.com/file/d/13LXifINMg0kk1ltQy56f55ssc8QO4kFs/view?usp=drive_link"
+       target="_blank" rel="noopener">https://drive.google.com/file/d/13LXifINMg0kk1ltQy56f55ssc8QO4kFs/view</a></p>
+</section>
+
+<!-- ══ CURRICULUM MAP ══ -->
+<section class="page" id="page-curriculum">
+  <span class="eyebrow">Curriculum</span>
+  <h1>VCE Applied Computing Pathways</h1>
+  <p class="lede">Units 1&ndash;4 of the VCE Applied Computing study design, read as two parts: a unit sequence and the problem-solving methodology.</p>
+
+  <h2>The map</h2>
+  <div class="board">
+    <!-- If the viewport is wrong, replace this src with the one Miro gives you:
+         Share → Embed → copy code. The board must first be set to
+         Share → Anyone with the link → can view.                              -->
+    <iframe src="https://miro.com/app/live-embed/uXjVHSbiK1A=/?embedMode=view_only_without_ui&amp;embedId=420192985520"
+            title="VCE Applied Computing Pathways curriculum map"
+            loading="lazy" scrolling="no"
+            allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
+  </div>
+  <p class="fallback">You may need to zoom out within the frame to see the whole map.</p>
+  <p class="fallback" style="margin-top:10px">Please visit the original website if something goes wrong here :)<br>
+    <a href="https://miro.com/app/board/uXjVHSbiK1A=/?share_link_id=420192985520"
+       target="_blank" rel="noopener">https://miro.com/app/board/uXjVHSbiK1A=/?share_link_id=420192985520</a></p>
+
+  <h2>Annotation</h2>
+  <div class="annot">
+    <p>This curriculum map is built on the Applied Computing Study Design (VCAA, 2024).</p>
+    <p>The map can be read as two parts: unit sequence and problem-solving methodology (PSM). Unit sequence shows a choice architecture: Units 1 and 2 are common, after which students can select Data Analytics or Software Development. The arrows show a typical pathway, but not a prerequisite chain.</p>
+    <p>The second part is the problem-solving methodology, drawn as a cycle and connected to the units it covers. Its four stages explain why the School-assessed Task (SAT) spans two units.</p>
+  </div>
+</section>
+
+<!-- ══ RESOURCES ══ -->
+<section class="page" id="page-resources">
+  <span class="eyebrow">Collection</span>
+  <h1>Resources</h1>
+  <p class="lede">Seven resources built for a single lesson: Lesson 5 of a Unit 3 Software Development sequence, in which Year 12 students turn the requirements and constraints in their own Software Requirements Specification into contrasting design ideas.</p>
+
+  <h2>The seven resources</h2>
+  <div class="index">
+    <div class="ihead"><span></span><span>Resource</span><span>Use in lesson</span><span>Pedagogy</span></div>
+    <div id="resindex"></div>
+  </div>
+
+  <p class="deck" style="margin-top:72px;font-size:calc(13.5 * var(--s));max-width:64ch;color:var(--mut)">All seven resources are new work produced for this portfolio. None duplicates the materials submitted with the lesson plan in Assessment Task&nbsp;1.</p>
+</section>
+
+<div id="respages"></div>
+
+<!-- ══ TEACHING REFLECTION ══ -->
+<section class="page" id="page-reflection">
+  <span class="eyebrow">Reflection</span>
+  <h1>Teaching Reflection and Pedagogical Analysis</h1>
+  <p class="lede">How I would teach with the seven resources in this portfolio, and what that design assumes about guidance, technology and time.</p>
+
+  <h2>Pedagogical approach</h2>
+  <div class="annot">
+    <p>My approach to these resources is constructivist, but constructivism alone does not settle the design. Students have to generate design ideas themselves in the lesson. The problem is that generation without a sense of what separates ideas produces cosmetic variation, and the outcome rewards genuine divergence. Dangol and Dasgupta (2023) reviewed forty-eight constructionist data projects with young people. They found that such projects reliably engage students in making, yet often stop short of critical questions about power and interest. Resource 5 is built on exactly that gap. Its case study is correct by the method students were taught, and still indefensible in its effects. The advantage is that students cannot dismiss it on instinct. They have to prove it works before they can argue it is wrong.</p>
+    <p>However, Hung, Hwang and Huang (2012) pointed out the limitations of project-based learning. Their quasi-experiment added a storytelling structure to ordinary project-based learning. The structured group gained more in problem-solving competence than the conventional group. I take this as evidence that project work needs a device that forces articulation. Resource 6 is that device here, and it costs fifteen minutes rather than a unit. Resource 6 also changes who owns the feedback. Nieminen et al. (2022) argue that feedback research treats agency as an individual, psychological property. They propose locating agency in relationships and materials instead. An exemplar pair does precisely that. Students judge two artefacts against each other before I say anything, so the judgement is theirs to defend.</p>
+    <p>The sequencing follows from this. Resource 1 moves definitions out of class, so lesson time opens on application. Resource 2 shows six contrasting pairs before any principle is named. Resource 3 comes last, because building before arguing produces justifications written backwards (Papert, 1980).</p>
+  </div>
+
+  <h2>Technology integration</h2>
+  <div class="annot">
+    <p>Zhu and Wang (2024) interviewed K-12 computer science teachers and instructors about their challenges. Students&rsquo; technology access was one of the three they named. That finding shaped a deliberate choice: six of my seven resources need no device. Resource 4 is a printed page, Resource 5 and Resource 6 are documents, and Resource 2 is a set of screenshots. Only Resource 3 requires a digital tool. A paper sketch has to be narrated by its author. A narrated design never fails, because the author closes every gap as it opens. A linked prototype can be handed over and left alone. Hesitation then becomes visible, and visible hesitation is the data students record. Mishra and Koehler (2006) treat technology, pedagogy and content as mutually constituting. My guiding principle is more specific: the digital tool enters only where removing it would remove the learning.</p>
+    <p>Inclusion follows the same logic. The greyscale rule strips the advantage held by students with design experience or better hardware. A supplied starter file removes tool fluency as a precondition for taking part. Resource 1&rsquo;s video is free, three minutes long, captioned and rewatchable. For students working in an additional language, that is worth more than an adjustment offered afterwards.</p>
+  </div>
+
+  <h2>Curriculum connection</h2>
+  <div class="annot">
+    <p>Unit 3 Outcome 2 asks students to document an analysis and generate design ideas and a preferred design (VCAA, 2024). I watched the VCAA implementation briefing before planning, and it gave me more than a boundary. The briefing requires a folio of design ideas and evaluation criteria. It never says what makes a criterion do any work (VCAA, 2025a). Resources 5 and 6 are designed to address this issue. Grover and Pea (2013) make the general version of this argument. They contend that computational thinking is not absorbed incidentally and needs deliberate instructional attention. Evaluation criteria work the same way. A study design can name a capability without making it teachable, and that gap is the teacher&rsquo;s to close. Resource 4 carries the reasoning across the assessment task. The School-assessed Task spans Unit 3 Outcome 2 and Unit 4 Outcome 1. A skill shown once in one annotated decision has to survive eight weeks of changing requirements. Pucher and Lehner (2011) reviewed more than five hundred computer science projects. They found that students hit trouble in the early phases, before a teacher notices. A weekly sheet makes those early blanks visible while they are still easy to fix.</p>
+  </div>
+
+  <h2>Challenges and risks</h2>
+  <div class="annot">
+    <p>Pucher and Lehner (2011) also name the risk I find hardest. Evaluating project results is difficult to standardise, and teacher remarks depend heavily on individual judgement. My design raises that exposure, because Resource 6 asks me to separate two complete, correctly termed responses. The counter is partly structural. An exemplar pair gives the class and me one shared anchor instead of my private standard. In addition, moderation with colleagues is what keeps the standard consistent beyond my own judgement.</p>
+    <p>The second risk is that the design may lead students to learn in order to cope with the assessment. Every resource asks students to name what a decision ruled out, and that demand is assessed. A student who studies Resource 6 closely has been shown what a convincing justification looks like. Shute (2008) concludes that formative feedback works when it is specific, timely and non-evaluative. Attaching marks to Resource 1&rsquo;s retrieval check would turn a diagnostic into a performance, so it stays ungraded. Resource 4 defends the same way over time. Asking weekly for the rejected alternative, against a changing specification, makes fabrication expensive to sustain.</p>
+    <p>For the other two smaller risks, I have also developed corresponding solutions. The implementation of Resource 1 relies on the cooperation of students, so I prepared alternative plans in the lesson plan in case of emergencies. Resource 6 is likely to lead to students mechanically imitating it, so both responses use a project unlike any student&rsquo;s own.</p>
+    <p>Also, time is the constraint I cannot resolve. Resources 2, 5 and 6 cost roughly forty minutes across two lessons of an already crowded outcome.</p>
+  </div>
+
+  <h2>Professional learning goals</h2>
+  <div class="annot">
+    <p>Two gaps are visible in the design. The first is judging evaluation criteria consistently across a class set of folios. The study design names the capability but does not model it. This is a moderation skill, and moderation is social interaction. Zhu and Wang (2024) found that teachers wanted content and pedagogical knowledge, and also an ongoing learning community. That matches what I need. A single workshop will not calibrate a judgement I have to make twenty-five times. Digital Learning and Teaching Victoria is the subject network where such calibration is argued rather than received. VCAA&rsquo;s School-assessed Task advice and regional moderation meetings are the formal sources.</p>
+    <p>The second gap is about teaching practice. I do not yet know how to stop a student rescuing their own prototype mid-test. Planning cannot supply that. Watching an experienced teacher and debriefing afterwards can. Nieminen et al. (2022) argue that agency is relational. The same holds for my own development. Both goals depend on comparing my judgements with those of other practitioners repeatedly.</p>
+  </div>
+
+  <h2>References</h2>
+  <div class="refs">
+    <p>Dangol, A., &amp; Dasgupta, S. (2023). Constructionist approaches to critical data literacy: A review. In <i>Proceedings of the 22nd Annual ACM Interaction Design and Children Conference</i> (pp. 112&ndash;123). Association for Computing Machinery.</p>
+    <p>Grover, S., &amp; Pea, R. (2013). Computational thinking in K&ndash;12: A review of the state of the field. <i>Educational Researcher, 42</i>(1), 38&ndash;43.</p>
+    <p>Hung, C.-M., Hwang, G.-J., &amp; Huang, I. (2012). A Project-based Digital Storytelling Approach for Improving Students&rsquo; Learning Motivation, Problem-Solving Competence and Learning Achievement. <i>Educational Technology &amp; Society, 15</i>(4), 368&ndash;379. <a href="https://doi.org/10.30191/ETS.201210_15(4).0031" target="_blank" rel="noopener">https://doi.org/10.30191/ETS.201210_15(4).0031</a></p>
+    <p>Mishra, P., &amp; Koehler, M. J. (2006). Technological pedagogical content knowledge: A framework for teacher knowledge. <i>Teachers College Record, 108</i>(6), 1017&ndash;1054.</p>
+    <p>Nieminen, J. H., Tai, J., Boud, D., &amp; Henderson, M. (2022). Student agency in feedback: Beyond the individual. <i>Assessment &amp; Evaluation in Higher Education, 47</i>(1), 95&ndash;108.</p>
+    <p>Papert, S. (1980). <i>Mindstorms: Children, computers, and powerful ideas</i>. Basic Books.</p>
+    <p>Pucher, R., &amp; Lehner, M. (2011). Project Based Learning in Computer Science &ndash; A Review of More than 500 Projects. <i>Procedia, Social and Behavioral Sciences, 29</i>, 1561&ndash;1566. <a href="https://doi.org/10.1016/j.sbspro.2011.11.398" target="_blank" rel="noopener">https://doi.org/10.1016/j.sbspro.2011.11.398</a></p>
+    <p>Shute, V. J. (2008). Focus on formative feedback. <i>Review of Educational Research, 78</i>(1), 153&ndash;189.</p>
+    <p>Victorian Curriculum and Assessment Authority. (2024). <i>VCE Applied Computing study design: Units 1&ndash;4 (2025&ndash;2028)</i>.</p>
+    <p>Victorian Curriculum and Assessment Authority. (2025a). <i>Background to Unit 3 Outcome 2 Software Development</i> [Video and transcript]. VCE Applied Computing: Software Development 2025 professional learning.</p>
+    <p>Zhu, M., &amp; Wang, C. (2024). K-12 computer science teaching strategies, challenges, and teachers&rsquo; professional development opportunities and needs. <i>Computers in the Schools, 41</i>(1), 1&ndash;22.</p>
+  </div>
+</section>
+
+<!-- ══ PUBLIC-FACING ══ -->
+<section class="page" id="page-public">
+  <span class="eyebrow">For teachers</span>
+  <h1>Public-Facing Contribution</h1>
+  <p class="lede">A short post for other teachers of senior digital technologies, on where design thinking belongs in VCE Applied Computing.</p>
+
+  <h2>The post</h2>
+  <article class="post" lang="en">
+    <h3 class="ptitle">Design thinking is already in your study design</h3>
+    <p class="by">Kuilin (Colin) Chen</p>
+
+    <p>There is a steady push to add design thinking to Applied Computing as a separate framework. I think that would be a mistake, and an unnecessary one. Ideation techniques, design tools, criteria for evaluating design ideas and the characteristics of user experience are all named in Units 3 and 4. A second framework gives students two vocabularies and fluency in neither.</p>
+
+    <p>What is missing is the part design thinking exists for: contact with a user who is not the designer (Brown, 2008; Razzouk &amp; Shute, 2012). The 2025 examination report shows the cost. On user-centred design, &ldquo;many responses included that user-centred design aims to meet the needs of the users without mentioning user involvement in the design process.&rdquo;</p>
+
+    <p class="lead">Three steps to bridge the gap here:</p>
+
+    <p class="step"><b>Make divergence structural.</b> Two design ideas must differ in where the information lives or how the user reaches it, not in colour or arrangement.</p>
+
+    <p class="step"><b>Put a user in the room before the design is fixed.</b> Three classmates, one task sentence read aloud, no explaining. Record where they hesitate.</p>
+
+    <p class="step"><b>Make the criterion discriminate.</b> A criterion both designs pass is doing no work.</p>
+
+    <p class="end">Design thinking is not a unit. It is what the folio should already have been.</p>
+  </article>
+
+  <h2>References</h2>
+  <div class="refs">
+    <p>Brown, T. (2008). Design thinking. <i>Harvard Business Review, 86</i>(6), 84&ndash;92.</p>
+    <p>Razzouk, R., &amp; Shute, V. (2012). What Is Design Thinking and Why Is It Important? <i>Review of Educational Research, 82</i>(3), 330&ndash;348. <a href="https://doi.org/10.3102/0034654312457429" target="_blank" rel="noopener">https://doi.org/10.3102/0034654312457429</a></p>
+    <p>Victorian Curriculum and Assessment Authority. (2025b). <i>2025 VCE Applied Computing: Software Development external assessment report</i>.</p>
+  </div>
+</section>
+
+<!-- ══ OTHERS ══ -->
+<section class="page" id="page-others">
+  <span class="eyebrow">Appendix</span>
+  <h1>References &amp; AI Use</h1>
+
+  <h2>References</h2>
+  <div class="refs">
+    <p>Alfieri, L., Nokes-Malach, T. J., &amp; Schunn, C. D. (2013). Learning Through Case Comparisons: A Meta-Analytic Review. <i>Educational Psychologist, 48</i>(2), 87&ndash;113. <a href="https://doi.org/10.1080/00461520.2013.775712" target="_blank" rel="noopener">https://doi.org/10.1080/00461520.2013.775712</a></p>
+    <p>Bergmann, J., &amp; Sams, A. (2012). <i>Flip your classroom: Reach every student in every class every day</i>. International Society for Technology in Education.</p>
+    <p>Black, P., &amp; Wiliam, D. (2009). Developing the theory of formative assessment. <i>Educational Assessment, Evaluation and Accountability, 21</i>(1), 5&ndash;31.</p>
+    <p>Brown, T. (2008). Design thinking. <i>Harvard Business Review, 86</i>(6), 84&ndash;92.</p>
+    <p>Dangol, A., &amp; Dasgupta, S. (2023). Constructionist approaches to critical data literacy: A review. In <i>Proceedings of the 22nd Annual ACM Interaction Design and Children Conference</i> (pp. 112&ndash;123). Association for Computing Machinery. <a href="https://doi.org/10.1145/3585088.3589367" target="_blank" rel="noopener">https://doi.org/10.1145/3585088.3589367</a></p>
+    <p>Emejulu, A., &amp; McGregor, C. (2019). Towards a radical digital citizenship in digital education. <i>Critical Studies in Education, 60</i>(1), 131&ndash;147.</p>
+    <p>Figma. (n.d.). <i>What is wireframing?</i> Figma Resource Library. <a href="https://www.figma.com/resource-library/what-is-wireframing/" target="_blank" rel="noopener">https://www.figma.com/resource-library/what-is-wireframing/</a></p>
+    <p>Gray, C. M., Kou, Y., Battles, B., Hoggatt, J., &amp; Toombs, A. L. (2018). The dark (patterns) side of UX design. In <i>Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems</i> (pp. 1&ndash;14). Association for Computing Machinery.</p>
+    <p>Grover, S., &amp; Pea, R. (2013). Computational thinking in K&ndash;12: A review of the state of the field. <i>Educational Researcher, 42</i>(1), 38&ndash;43. <a href="https://doi.org/10.3102/0013189X12463051" target="_blank" rel="noopener">https://doi.org/10.3102/0013189X12463051</a></p>
+    <p>Harley, A. (2019). <i>Usability heuristic 1: Visibility of system status</i> [Video]. Nielsen Norman Group. <a href="https://www.nngroup.com/videos/usability-heuristic-system-status/" target="_blank" rel="noopener">https://www.nngroup.com/videos/usability-heuristic-system-status/</a></p>
+    <p>Hattie, J., &amp; Timperley, H. (2007). The power of feedback. <i>Review of Educational Research, 77</i>(1), 81&ndash;112.</p>
+    <p>Hung, C.-M., Hwang, G.-J., &amp; Huang, I. (2012). A Project-based Digital Storytelling Approach for Improving Students&rsquo; Learning Motivation, Problem-Solving Competence and Learning Achievement. <i>Educational Technology &amp; Society, 15</i>(4), 368&ndash;379. <a href="https://doi.org/10.30191/ETS.201210_15(4).0031" target="_blank" rel="noopener">https://doi.org/10.30191/ETS.201210_15(4).0031</a></p>
+    <p>Mishra, P., &amp; Koehler, M. J. (2006). Technological pedagogical content knowledge: A framework for teacher knowledge. <i>Teachers College Record, 108</i>(6), 1017&ndash;1054.</p>
+    <p>Nicol, D. J., &amp; Macfarlane-Dick, D. (2006). Formative assessment and self-regulated learning: a model and seven principles of good feedback practice. <i>Studies in Higher Education (Dorchester-on-Thames), 31</i>(2), 199&ndash;218. <a href="https://doi.org/10.1080/03075070600572090" target="_blank" rel="noopener">https://doi.org/10.1080/03075070600572090</a></p>
+    <p>Nieminen, J. H., Tai, J., Boud, D., &amp; Henderson, M. (2022). Student agency in feedback: Beyond the individual. <i>Assessment &amp; Evaluation in Higher Education, 47</i>(1), 95&ndash;108. <a href="https://doi.org/10.1080/02602938.2021.1887080" target="_blank" rel="noopener">https://doi.org/10.1080/02602938.2021.1887080</a></p>
+    <p>Papert, S. (1980). <i>Mindstorms: Children, computers, and powerful ideas</i>. Basic Books.</p>
+    <p>Pucher, R., &amp; Lehner, M. (2011). Project Based Learning in Computer Science &ndash; A Review of More than 500 Projects. <i>Procedia, Social and Behavioral Sciences, 29</i>, 1561&ndash;1566. <a href="https://doi.org/10.1016/j.sbspro.2011.11.398" target="_blank" rel="noopener">https://doi.org/10.1016/j.sbspro.2011.11.398</a></p>
+    <p>Razzouk, R., &amp; Shute, V. (2012). What Is Design Thinking and Why Is It Important? <i>Review of Educational Research, 82</i>(3), 330&ndash;348. <a href="https://doi.org/10.3102/0034654312457429" target="_blank" rel="noopener">https://doi.org/10.3102/0034654312457429</a></p>
+    <p>Roediger, H. L., &amp; Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. <i>Psychological Science, 17</i>(3), 249&ndash;255.</p>
+    <p>Sadler, D. R. (1989). Formative assessment and the design of instructional systems. <i>Instructional Science, 18</i>(2), 119&ndash;144.</p>
+    <p>Schwartz, D. L., &amp; Bransford, J. D. (1998). A time for telling. <i>Cognition and Instruction, 16</i>(4), 475&ndash;522.</p>
+    <p>Shute, V. J. (2008). Focus on formative feedback. <i>Review of Educational Research, 78</i>(1), 153&ndash;189. <a href="https://doi.org/10.3102/0034654307313795" target="_blank" rel="noopener">https://doi.org/10.3102/0034654307313795</a></p>
+    <p>Victorian Curriculum and Assessment Authority. (2024). <i>VCE Applied Computing study design: Units 1&ndash;4 (2025&ndash;2028)</i>. <a href="https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/applied-computing/applied-computing" target="_blank" rel="noopener">https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/applied-computing/applied-computing</a></p>
+    <p>Victorian Curriculum and Assessment Authority. (2025a). <i>Background to Unit 3 Outcome 2 Software Development</i> [Video and transcript]. VCE Applied Computing: Software Development 2025 professional learning. <a href="https://vcaa.vic.edu.au/professional-learning-programs/vce/vce-applied-computing-software-development-2025" target="_blank" rel="noopener">https://vcaa.vic.edu.au/professional-learning-programs/vce/vce-applied-computing-software-development-2025</a></p>
+    <p>Victorian Curriculum and Assessment Authority. (2025b). <i>2025 VCE Applied Computing: Software Development external assessment report</i>. <a href="https://www.vcaa.vic.edu.au/assessment/vce/examination-specifications-past-examinations-and-examination-reports/applied-computing-software-development" target="_blank" rel="noopener">https://www.vcaa.vic.edu.au/assessment/vce/examination-specifications-past-examinations-and-examination-reports/applied-computing-software-development</a></p>
+    <p>Virzi, R. A. (1992). Refining the test phase of usability evaluation: How many subjects is enough? <i>Human Factors, 34</i>(4), 457&ndash;468.</p>
+    <p>Zhu, M., &amp; Wang, C. (2024). K-12 computer science teaching strategies, challenges, and teachers&rsquo; professional development opportunities and needs. <i>Computers in the Schools, 41</i>(1), 1&ndash;22. <a href="https://doi.org/10.1080/07380569.2023.2178868" target="_blank" rel="noopener">https://doi.org/10.1080/07380569.2023.2178868</a></p>
+    <p>Zimmerman, B. J. (2002). Becoming a self-regulated learner: An overview. <i>Theory Into Practice, 41</i>(2), 64&ndash;70.</p>
+  </div>
+
+  <h2>AI Use Statement</h2>
+  <div class="annot">
+    <p>I acknowledge the use of Claude (<a href="https://claude.ai/" target="_blank" rel="noopener">https://claude.ai/</a>) to help me deconstruct the assessment task and better understand the requirement. I use it to evaluate my pedagogical choice and other content against the prompts to double-check whether I have answered all the questions. When designing the digital portfolio, I ask Claude to give me some ideas about the web design. I entered the prompts between 20 October to 2 November.</p>
+  </div>
+</section>
+
+</div></main>
+
+<script>
+/* ── fill a resource in by editing its object ───────────────────────── */
+const RESOURCES = [
+  { id:'r1', n:'R1', title:'Flipped Task: Visibility of System Status',
+    blurb:'A curated three-minute video and five questions that buy back class time.',
+    use:'Set the evening before; the results set the Phase 3 check-in order',
+    ped:'Flipped classroom: direct instruction moves out of class so class time is spent on application (Bergmann &amp; Sams, 2012)',
+    sub:'A curated Nielsen Norman Group video and a five-question retrieval check written to bridge it to the study design',
+    facts:{'When used':'Set the evening before; results read on the morning of the lesson',
+           'Duration':'3 minutes of video, 5 questions',
+           'Supports':'SC1, SC2',
+           'Key knowledge':'Characteristics of user experience; design principles; functional and non-functional requirements and constraints (VCAA, 2024)'},
+    quote:'',
+    body:`
+<h3>The video</h3>
+<a class="linkcard" href="https://www.nngroup.com/videos/usability-heuristic-system-status/" target="_blank" rel="noopener">
+  <b>Usability Heuristic 1: Visibility of System Status</b>
+  <i>Aurora Harley, Nielsen Norman Group, 2019. Three minutes. Freely available, with a transcript on the same page.</i>
+  <span>nngroup.com/videos/usability-heuristic-system-status</span>
+</a>
+
+<h3>The five questions</h3>
+<table class="tbl">
+  <colgroup><col style="width:34px"><col><col style="width:30%"></colgroup>
+  <thead><tr><th></th><th>Question</th><th>What a wrong answer tells the teacher</th></tr></thead>
+  <tbody>
+    <tr><td class="k">1</td>
+      <td>The video shows systems telling the user what is going on. Name one example from an app you used today, and say what the user would have to guess if it were missing. <i>(Short answer.)</i></td>
+      <td data-l="A wrong answer tells">An example repeated from the video means the heuristic has been recalled but not transferred.</td></tr>
+    <tr><td class="k">2</td>
+      <td>&ldquo;The user&rsquo;s balance is visible at all times.&rdquo; Is this a functional requirement, a non-functional requirement, or a constraint? <i>(Multiple choice.)</i></td>
+      <td data-l="A wrong answer tells">Choosing non-functional is the common confusion: treating anything about the interface as a quality attribute.</td></tr>
+    <tr><td class="k">3</td>
+      <td>&ldquo;A repeat order must be completable in under 30 seconds.&rdquo; Same three options. <i>(Multiple choice.)</i></td>
+      <td data-l="A wrong answer tells">Choosing functional means the student is classifying by topic rather than by what the statement measures.</td></tr>
+    <tr><td class="k">4</td>
+      <td>&ldquo;The school will not create student accounts for this system.&rdquo; Same three options. <i>(Multiple choice.)</i></td>
+      <td data-l="A wrong answer tells">Choosing a requirement means the student has not yet seen that a constraint limits the solution rather than describing it.</td></tr>
+    <tr><td class="k">5</td>
+      <td>A designer writes: &ldquo;My design shows the system status, so it is a good design.&rdquo; What has that sentence not established? <i>(Short answer, two lines.)</i></td>
+      <td data-l="A wrong answer tells">This is the one that matters. Naming a principle is not a justification, and whoever cannot say so yet will need the first visit in Phase 3.</td></tr>
+  </tbody>
+</table>
+<p class="cap"><b>Answers.</b> 2 is functional: it is something the system must show the user. 3 is non-functional: it sets a measure on how well, not on what. 4 is a constraint: it rules options out without asking for any behaviour. Question 5 has no single answer, which is why it is not marked.</p>
+
+<h3>How the results are used</h3>
+<ul class="bul">
+  <li>Questions 2 to 4 mark themselves. The pattern across the class decides what the six minutes of direct instruction in Phase 1 are spent on: the heuristic, or the classification.</li>
+  <li>Question 5 is skimmed, not marked. Twenty-five two-line answers take about three minutes to read.</li>
+  <li>The three weakest answers to Question 5 set the order of the Phase 3 check-ins. Those pairs are visited first, while there is still time in the lesson to change what they are doing.</li>
+  <li>Nothing is graded, and nothing is returned. The check is read once, before the lesson, and then it has done its job.</li>
+</ul>
+`,
+    notes:['Set it with a deadline the evening before rather than &ldquo;before the lesson&rdquo;, so the results can actually be read in the morning. A flipped task whose responses arrive during period 1 is not a flipped task.',
+           'If fewer than two thirds have watched it, do not run Phase 1 as planned. Play the three minutes in class.',
+           'Keep it ungraded. The benefit of retrieval practice does not depend on the score, and attaching marks turns a diagnostic into something students optimise against.'],
+    annotation:['Three minutes of curated video and five teacher-written questions, set the evening before. The division of labour is the design decision: the conceptual content is taken from Nielsen Norman Group, who made it better than a first-year teacher could, while the questions that translate it into the study design&rsquo;s vocabulary are written here, because no external resource will do that. Moving the definitional load out of class is what frees Phase 3 to run for 21 minutes (Bergmann &amp; Sams, 2012), and the questions earn their place twice: retrieval strengthens what was watched (Roediger &amp; Karpicke, 2006), and the responses to Question 5 decide which pairs are visited first.',
+      'Limitation: it depends entirely on compliance, and the fallback costs the lesson six minutes it has not budgeted. It also outsources the explanation, so a student who finds the video unclear has no second account to turn to until Phase 1.'],
+    refs:['Bergmann, J., &amp; Sams, A. (2012). <i>Flip your classroom: Reach every student in every class every day</i>. International Society for Technology in Education.',
+          'Harley, A. (2019). <i>Usability heuristic 1: Visibility of system status</i> [Video]. Nielsen Norman Group. https://www.nngroup.com/videos/usability-heuristic-system-status/',
+          'Roediger, H. L., &amp; Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. <i>Psychological Science, 17</i>(3), 249–255.',
+          'Victorian Curriculum and Assessment Authority. (2024). <i>VCE Applied Computing study design: Units 1–4 (2025–2028)</i>.'],
+    done:true },
+
+  { id:'r2', n:'R2', title:'Comparison Gallery: One Task, Two Interfaces',
+    blurb:'Six pairs of real interfaces that solve the same task in different ways.',
+    use:'Opens the Starter and runs into Phase 1, read in pairs before any definition is given',
+    ped:'Contrasting cases: comparing two solutions to one task makes the distinguishing features noticeable (Schwartz &amp; Bransford, 1998)',
+    sub:'Six pairs of real interfaces, each pair solving one user task two different ways',
+    facts:{'When used':'The Starter, running into Phase 1',
+           'Duration':'8 minutes of paired reading, then 6 minutes of direct instruction',
+           'Supports':'SC1','Key knowledge':'Ideation techniques and tools; design principles; characteristics of user experience (VCAA, 2024)'},
+    quote:'',
+    body:`
+<h3>What it is</h3>
+<p>Six pairs of screenshots. Each pair shows one user task solved two different ways by two products students already use. Nothing in the gallery is labelled good or bad, and no definition is given before students look at it. The eight minutes are spent arguing about what is different, not about which is better.</p>
+<p>The pairs are chosen so that the difference is structural rather than cosmetic.</p>
+
+<h3>The six pairs</h3>
+<table class="tbl">
+  <colgroup><col style="width:21%"><col style="width:23%"><col style="width:23%"><col></colgroup>
+  <thead><tr><th>The user task</th><th>Interface A</th><th>Interface B</th><th>What differs, structurally</th></tr></thead>
+  <tbody>
+    <tr><td class="cr">Find out when the next service leaves</td>
+        <td data-l="Interface A">PTV app: a departures board listing the next services from one stop</td>
+        <td data-l="Interface B">Google Maps: a journey planner that asks for an origin and a destination</td>
+        <td data-l="What differs">What the user is asked for. A knows where you are and says what is leaving. B asks where you are going and builds a route.</td></tr>
+    <tr><td class="cr">Enter a date</td>
+        <td data-l="Interface A">A calendar grid you tap</td>
+        <td data-l="Interface B">A typed field with a format hint, such as DD/MM/YYYY</td>
+        <td data-l="What differs">Who carries the format. A cannot produce an invalid date. B can, so it has to check and report errors.</td></tr>
+    <tr><td class="cr">Decide what to eat</td>
+        <td data-l="Interface A">A delivery app&rsquo;s photo grid</td>
+        <td data-l="Interface B">The venue&rsquo;s own text menu page</td>
+        <td data-l="What differs">What is put first. A sells with images and puts detail behind a tap. B shows prices, sizes and allergens in one scan.</td></tr>
+    <tr><td class="cr">Check the forecast</td>
+        <td data-l="Interface A">Bureau of Meteorology seven day table</td>
+        <td data-l="Interface B">A phone weather app showing one large figure</td>
+        <td data-l="What differs">How much is visible at once. A supports comparison across days. B supports a glance.</td></tr>
+    <tr><td class="cr">Find a setting</td>
+        <td data-l="Interface A">A nested Settings list you drill into</td>
+        <td data-l="Interface B">A search field at the top of Settings</td>
+        <td data-l="What differs">Whether the user has to know how the system is organised before they can find anything.</td></tr>
+    <tr><td class="cr">Check an item is available before travelling to the shop</td>
+        <td data-l="Interface A">A product page listing stock store by store</td>
+        <td data-l="Interface B">A map that filters stores by what is in stock</td>
+        <td data-l="What differs">Whether availability is attached to the item or to the place.</td></tr>
+  </tbody>
+</table>
+
+<h3>What students do in the eight minutes</h3>
+<ul class="bul">
+  <li>In pairs, pick any three of the six. For each, write one sentence: <i>what is different is not how they look, it is &hellip;</i></li>
+  <li>For one pair, name a user who is better served by A and a user who is better served by B. Not a better design: a better fit.</li>
+</ul>
+
+<h3>Attribution</h3>
+<p>For each capture, record the product name, the date it was taken, and the URL or app version. Every capture is listed beside the gallery with one line on why it is shown.</p>
+<p>Australian copyright law provides fair dealing exceptions for research or study and for criticism or review (<i>Copyright Act 1968</i> (Cth)). The capture record is what makes that claim checkable rather than assumed.</p>
+`,
+    notes:['Run the eight minutes before any definition of a design principle is given. The direct instruction in Phase 1 then names what pairs have already noticed, which is a different act from introducing it.',
+           'The most common wrong turn is a pair ranking the two interfaces. Redirect with one question: who is each one for? A design can be worse for you and right for its user.',
+           'Keep one pair in reserve and unseen. If a class settles too quickly, the sixth pair works as a cold check: the same reasoning on an example they have not discussed.'],
+    annotation:['Six pairs of real interfaces, each pair solving one user task two ways, read before any definition is given. Comparing two cases makes a distinguishing feature noticeable in a way a single annotated example cannot (Schwartz &amp; Bransford, 1998; Alfieri et al., 2013), which matters here because the success criterion is that two designs can both be valid. Using products students already carry removes the inference that design quality is a property of unfamiliar professional work.',
+      'Limitation: real interfaces date quickly, and a stale gallery quietly teaches that these decisions were settled long ago.'],
+    refs:['Alfieri, L., Nokes-Malach, T. J., &amp; Schunn, C. D. (2013). Learning Through Case Comparisons: A Meta-Analytic Review. <i>Educational Psychologist, 48</i>(2), 87–113. https://doi.org/10.1080/00461520.2013.775712',
+          'Schwartz, D. L., &amp; Bransford, J. D. (1998). A time for telling. <i>Cognition and Instruction, 16</i>(4), 475–522.',
+          'Victorian Curriculum and Assessment Authority. (2024). <i>VCE Applied Computing study design: Units 1–4 (2025–2028)</i>.'],
+    done:true },
+
+  { id:'r3', n:'R3', title:'Prototype Challenge: Wireframe and User Test',
+    blurb:'Where the digital tool finally earns its place.',
+    use:'The whole of the following lesson, once a preferred design has been chosen',
+    ped:'Constructionism: students learn by building and testing an artefact themselves (Papert, 1980)',
+    sub:'A low-fidelity wireframe, and a test of it on three users who did not design it',
+    facts:{'When used':'The lesson after the exemplar pair, once a preferred design exists',
+           'Duration':'One lesson to build, the following week to test',
+           'Supports':'SC2, SC3','Key knowledge':'Design tools, including mock-ups; characteristics of user experience; criteria for evaluating design ideas (VCAA, 2024)'},
+    quote:'',
+    body:`
+<h3>What students bring</h3>
+<p>Their preferred design from Lesson 5, and the one annotation they rewrote after the exemplar pair. The prototype is that design made operable, not a new idea.</p>
+
+<h3>Background reading</h3>
+<a class="linkcard" href="https://www.figma.com/resource-library/what-is-wireframing/" target="_blank" rel="noopener">
+  <b>What is wireframing?</b>
+  <i>Figma Resource Library. About seven minutes. Covers what a wireframe is for, and the difference between low, mid and high fidelity. Read the low-fidelity section before building.</i>
+  <span>figma.com/resource-library/what-is-wireframing</span>
+</a>
+
+<h3>The tool</h3>
+<p>Any interface design tool that can link one screen to another: Figma, Canva, or an equivalent. The choice is the student&rsquo;s. What matters is that a tester can tap through it without the designer narrating.</p>
+<p>A starter file is supplied in both Figma and Canva, with the three frames already set up and the basic components, buttons, input fields, lists and a back arrow, placed beside them ready to drag in. The lesson is for building a structure, not for learning a tool.</p>
+
+<h3>The build</h3>
+<ul class="bul">
+  <li>Three screens: where the user arrives, where they act, and what they see afterwards.</li>
+  <li>Linked, so a tap moves between them. A static image is not a prototype.</li>
+  <li><b>Greyscale only.</b> No colour, no logo, no photographs, no product images.</li>
+</ul>
+<p>Greyscale is what keeps the test about structure. With colour available, a weak design can be rescued by looking finished, and the test then measures the polish instead.</p>
+
+<h3>The user test</h3>
+<p>Three users who were not in the room when the design was made. Either students from another class, found in the corridor, or three classmates who worked on a different project. Not a partner who already knows the design.</p>
+<ul class="bul">
+  <li>Read one task sentence, word for word, the same to each user. For example: <i>Find out whether a basketball is available.</i></li>
+  <li>Hand over the prototype and say nothing else. No explaining, no hinting, no rescuing.</li>
+  <li>Watch for hesitation rather than failure. The moment a user pauses is the moment the design stopped being obvious.</li>
+</ul>
+
+<h3>What is recorded</h3>
+<table class="tbl">
+  <colgroup><col style="width:38%"><col></colgroup>
+  <thead><tr><th>Recorded</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td class="cr">The task sentence, word for word</td><td data-l="Example">&ldquo;Find out whether a basketball is available.&rdquo;</td></tr>
+    <tr><td class="cr">Where each user hesitated, paused, or asked a question</td><td data-l="Example">User 2 tapped the title bar, expecting it to be a search field.</td></tr>
+    <tr><td class="cr">One change made, and the observation that caused it</td><td data-l="Example">Moved search to the top of screen 1, because two of three users looked there first.</td></tr>
+    <tr><td class="cr">One thing <i>not</i> changed, and why</td><td data-l="Example">Kept the grid. The hesitation was about finding search, not about the layout.</td></tr>
+  </tbody>
+</table>
+
+<h3>Support resource</h3>
+<a class="linkcard" href="https://www.figma.com/community/file/1221009141145444839/wireframes-kit-free-wireframing-for-websites-apps-and-saas-ui-ux" target="_blank" rel="noopener">
+  <b>Wireframes Kit: free wireframing for websites, apps and SaaS</b>
+  <i>A free Figma Community file. Duplicate it into your own drafts and drag the parts you need into your frames. Use it if you want a wider set of components than the starter file provides.</i>
+  <span>figma.com/community/file/1221009141145444839</span>
+</a>
+`,
+    notes:['Hold the line on greyscale. Every year someone asks whether they can add the school colours. The answer is that colour is the next unit&rsquo;s problem, and that a design which only works once it is coloured in has not been tested.',
+           'Someone will ask whether they can just use their paper sketch. The reason for saying no is worth saying out loud: a paper sketch has to be narrated by its author, and a narrated design never fails, because the author fills every gap as it appears.',
+           'Three users is enough at this stage. The aim is not a representative sample; it is the first encounter with a user who is not the designer.',
+           'Students will want to rescue the user mid-test. Send them in pairs: one hands the prototype over and stays silent, the other writes down where the user paused.'],
+    annotation:['The point in the sequence where a digital tool is worth the time it costs. Students rebuild their chosen design as a linked three-screen wireframe and hand it to three users who were not in the room when it was designed. Constructionism holds that understanding is built by making something public and watching it meet the world (Papert, 1980), and three users is enough for most of the obvious breakdowns to appear (Virzi, 1992). Greyscale keeps the test about structure, since colour lets a weak design look resolved, while a starter file removes the tool overhead so the lesson is spent on design rather than on software. The recorded judgement is not the change made but the change refused.',
+      'Limitation: three classmates in a classroom is not usability testing, and saying so matters. It is a first encounter with a user who is not the designer, and claiming more for it would teach students to overstate their own evidence.'],
+    refs:['Figma. (n.d.). <i>What is wireframing?</i> Figma Resource Library. https://www.figma.com/resource-library/what-is-wireframing/',
+          'Papert, S. (1980). <i>Mindstorms: Children, computers, and powerful ideas</i>. Basic Books.',
+          'Victorian Curriculum and Assessment Authority. (2024). <i>VCE Applied Computing study design: Units 1–4 (2025–2028)</i>.',
+          'Virzi, R. A. (1992). Refining the test phase of usability evaluation: How many subjects is enough? <i>Human Factors, 34</i>(4), 457–468.'],
+    done:true },
+
+  { id:'r4', n:'R4', title:'Checkpoint Sheet: Requirements and Design Decisions',
+    blurb:'One page that shows which requirements nothing answers yet.',
+    use:'Filled in at each weekly SAT checkpoint across the eight weeks',
+    ped:'Self-regulated learning: students monitor their own progress against a visible standard (Zimmerman, 2002)',
+    sub:'A one-page sheet, filled in weekly, that surfaces the gaps rather than the links',
+    facts:{'When used':'Each weekly checkpoint across the eight-week School-assessed Task',
+           'Duration':'Ten minutes per checkpoint',
+           'Supports':'SC2','Key knowledge':'Purpose and features of software requirements specifications; criteria for evaluating design ideas (VCAA, 2024)'},
+    quote:'',
+    body:`
+<h3>The problem it solves</h3>
+<p>Lesson 5 asks a student to trace one design decision to one requirement. The School-assessed Task asks them to do it across an entire specification, over eight weeks, while the specification itself is still changing. The skill does not scale by itself. What breaks first is not the individual link but the overview: a student can justify every decision they made and still have no idea which requirements they have quietly stopped answering.</p>
+
+<h3>The sheet</h3>
+<p>One page. One row for every requirement and every constraint, copied from the student&rsquo;s own software requirements specification.</p>
+<table class="tbl grid">
+  <colgroup><col style="width:9%"><col style="width:27%"><col style="width:23%"><col style="width:26%"><col style="width:15%"></colgroup>
+  <thead><tr><th>Ref</th><th>Requirement or constraint</th><th>The design decision that answers it</th><th>What that decision ruled out</th><th>Recorded</th></tr></thead>
+  <tbody>
+    <tr><td class="f" data-l="Ref"></td><td class="f" data-l="Requirement or constraint"></td><td class="f" data-l="The decision that answers it"></td><td class="f" data-l="What it ruled out"></td><td class="f" data-l="Recorded"></td></tr>
+    <tr><td class="f" data-l="Ref"></td><td class="f" data-l="Requirement or constraint"></td><td class="f" data-l="The decision that answers it"></td><td class="f" data-l="What it ruled out"></td><td class="f" data-l="Recorded"></td></tr>
+    <tr><td class="f" data-l="Ref"></td><td class="f" data-l="Requirement or constraint"></td><td class="f" data-l="The decision that answers it"></td><td class="f" data-l="What it ruled out"></td><td class="f" data-l="Recorded"></td></tr>
+    <tr><td class="f" data-l="Ref"></td><td class="f" data-l="Requirement or constraint"></td><td class="f" data-l="The decision that answers it"></td><td class="f" data-l="What it ruled out"></td><td class="f" data-l="Recorded"></td></tr>
+    <tr><td class="f" data-l="Ref"></td><td class="f" data-l="Requirement or constraint"></td><td class="f" data-l="The decision that answers it"></td><td class="f" data-l="What it ruled out"></td><td class="f" data-l="Recorded"></td></tr>
+  </tbody>
+</table>
+
+<h3>An example, filled in</h3>
+<p>The same sheet, four rows into an eight-week project. NFR1 has nothing in the third column, and that is the row this checkpoint is about.</p>
+<table class="tbl">
+  <colgroup><col style="width:9%"><col style="width:27%"><col style="width:23%"><col style="width:26%"><col style="width:15%"></colgroup>
+  <thead><tr><th>Ref</th><th>Requirement or constraint</th><th>The design decision that answers it</th><th>What that decision ruled out</th><th>Recorded</th></tr></thead>
+  <tbody>
+    <tr><td class="k">FR1</td><td>A student must be able to reserve an item for the next day.</td>
+        <td data-l="Decision">Reserve button on the item tile</td>
+        <td data-l="Ruled out">Reserving on someone else&rsquo;s behalf</td>
+        <td class="ty" data-l="Recorded">Journal p. 4</td></tr>
+    <tr><td class="k">FR2</td><td>A student must be able to see whether an item is available before walking to the PE store.</td>
+        <td data-l="Decision">Public availability page reached by QR code</td>
+        <td data-l="Ruled out">A personal &ldquo;my borrowings&rdquo; view, because C2 forbids logins</td>
+        <td class="ty" data-l="Recorded">Journal p. 6</td></tr>
+    <tr><td class="k">NFR1</td><td>A borrowing must be recorded in under 20 seconds.</td>
+        <td class="blank" data-l="Decision"></td>
+        <td class="blank" data-l="Ruled out"></td>
+        <td class="blank" data-l="Recorded"></td></tr>
+    <tr><td class="k">C2</td><td>The system must work without student logins.</td>
+        <td data-l="Decision">Shaped the QR page: no account, so no personalisation</td>
+        <td data-l="Ruled out">Any design that needs a signed-in user</td>
+        <td class="ty" data-l="Recorded">Journal p. 6</td></tr>
+  </tbody>
+</table>
+
+<h3>Reading the sheet</h3>
+<p>Two things to look for.</p>
+<ul class="bul">
+  <li><b>A row with nothing in the third column.</b> Either a design is still owed, or the requirement should be withdrawn. Both are findings, and neither is visible from a folio of well-annotated decisions.</li>
+  <li><b>A design decision that appears nowhere on the sheet.</b> Usually scope creep. Occasionally it is a requirement the student discovered but never wrote down, which is the more interesting case: it sends them back to the specification rather than to the design.</li>
+</ul>
+
+<h3>How a checkpoint runs</h3>
+<p>Ten minutes, weekly, and the student does the writing. The conversation starts at the blanks and nowhere else. A blank is not a fault to apologise for; it is the agenda. The teacher&rsquo;s question is the same every time: <i>is this a design you still owe, or a requirement you should withdraw?</i></p>
+
+`,
+    notes:['Set it up in week 1, before there are any decisions to record. A sheet started in week 4 becomes a reconstruction exercise, and reconstructed traceability is the thing the exemplar pair warns against.',
+           'Expect the specification to change. When a requirement is withdrawn, rule a line through the row rather than deleting it. The record of what was dropped, and when, is useful evidence at the end.',
+           'Print it. A sheet on the desk during a checkpoint gets read; a file that has to be opened first does not.'],
+    annotation:['A one-page sheet, filled in at each weekly checkpoint, that scales the Lesson 5 skill from one annotated decision to a whole specification across the eight-week School-assessed Task. Its design choice is what it asks for: not whether a requirement has been met, which anyone can answer yes to, but which decision answers it and what that decision ruled out. The second half cannot be written by a student who has not made the decision, so the blanks stay blank and become the agenda for the ten minutes. Making the standard visible and self-applied is the condition under which monitoring becomes self-regulation rather than self-report (Zimmerman, 2002; Nicol &amp; Macfarlane-Dick, 2006).',
+      'Limitation: the sheet records whether a requirement is answered, not how well. It is a coverage instrument, and it needs the evaluation criteria from R5 and R6 beside it to say anything about quality.'],
+    refs:['Nicol, D. J., &amp; Macfarlane-Dick, D. (2006). Formative assessment and self-regulated learning: a model and seven principles of good feedback practice. <i>Studies in Higher Education (Dorchester-on-Thames), 31</i>(2), 199–218. https://doi.org/10.1080/03075070600572090',
+          'Victorian Curriculum and Assessment Authority. (2024). <i>VCE Applied Computing study design: Units 1–4 (2025–2028)</i>.',
+          'Zimmerman, B. J. (2002). Becoming a self-regulated learner: An overview. <i>Theory Into Practice, 41</i>(2), 64–70.'],
+    done:true },
+
+  { id:'r5', n:'R5', title:'Case Study: School Canteen Ordering Application',
+    blurb:'A design that traces perfectly and is still indefensible.',
+    use:'Phase 3 extension for pairs who finish the transfer task early; also opens the following lesson',
+    ped:'Inquiry-based learning: students investigate a case to build their own explanation (Hmelo-Silver et al., 2007)',
+    sub:'An ethical case study on the limits of traceability',
+    facts:{'When used':'Phase 3 extension, or the opening of the following lesson','Duration':'15 minutes',
+           'Supports':'SC3','Key knowledge':'Characteristics of user experience; criteria for evaluating design ideas; key legal requirements (VCAA, 2024)'},
+    quote:'Traceability establishes that a decision has a justification. It does not establish that the justification is good.',
+    body:`
+<h3>The brief</h3>
+<p>Riverton Secondary College is extending its canteen ordering application to support pre-ordering with a stored balance. The client is the canteen manager. The following requirements and constraints are taken from the approved Software Requirements Specification.</p>
+<table class="tbl">
+  <colgroup><col style="width:78px"><col><col style="width:30%"></colgroup>
+  <thead><tr><th>Ref</th><th>Statement</th><th>Type</th></tr></thead>
+  <tbody>
+    <tr><td class="k">FR-A</td><td>A user must be able to add funds to their balance from the ordering screen.</td><td class="ty" data-l="Type">Functional requirement</td></tr>
+    <tr><td class="k">FR-B</td><td>The user&rsquo;s current balance must be visible at all times.</td><td class="ty" data-l="Type">Functional requirement</td></tr>
+    <tr><td class="k">FR-C</td><td>A user must be able to cancel an order.</td><td class="ty" data-l="Type">Functional requirement</td></tr>
+    <tr><td class="k">NFR-A</td><td>A repeat order must be completable in under 30 seconds.</td><td class="ty" data-l="Type">Non-functional requirement (usability)</td></tr>
+    <tr><td class="k">C-A</td><td>The canteen must not be left holding prepared food that is not collected.</td><td class="ty" data-l="Type">Economic constraint</td></tr>
+    <tr><td class="k">C-B</td><td>Allergen information must be available to the user before an order is confirmed.</td><td class="ty" data-l="Type">Legal constraint</td></tr>
+  </tbody>
+</table>
+
+<h3>The proposed design</h3>
+<p>Four decisions from the submitted design, each with the designer&rsquo;s own traceability note, written in the format used in Lesson&nbsp;5.</p>
+<table class="tbl">
+  <colgroup><col style="width:44px"><col style="width:40%"><col></colgroup>
+  <thead><tr><th></th><th>Decision</th><th>The designer&rsquo;s traceability note</th></tr></thead>
+  <tbody>
+    <tr><td class="k">1</td><td>The top-up field defaults to $50. Smaller amounts are available under &ldquo;More options&rdquo;.</td><td class="note" data-l="Traceability note">&ldquo;Serves FR-A: funds can be added without leaving the ordering screen. The default reduces the number of top-up events, which supports NFR-A by keeping the repeat-order flow short.&rdquo;</td></tr>
+    <tr><td class="k">2</td><td>The balance is displayed as a large figure. Below $5 it turns red and a &ldquo;Top up now&rdquo; button appears beside it.</td><td class="note" data-l="Traceability note">&ldquo;Serves FR-B: the balance is visible at all times. The colour change uses contrast, so the state reads without a legend.&rdquo;</td></tr>
+    <tr><td class="k">3</td><td>Cancelling requires: Account &rarr; Order history &rarr; select the order &rarr; tick &ldquo;I understand that cancelling may affect availability for others&rdquo; &rarr; Cancel.</td><td class="note" data-l="Traceability note">&ldquo;Serves FR-C: cancellation is available. The confirmation step serves C-A, because late cancellations leave the canteen holding prepared food.&rdquo;</td></tr>
+    <tr><td class="k">4</td><td>Repeat order is one tap from the home screen. Allergen information sits behind an &ldquo;Item details&rdquo; tap.</td><td class="note" data-l="Traceability note">&ldquo;Serves NFR-A: the repeat flow is a single tap. C-B is met, because allergen information is reachable before the order is confirmed.&rdquo;</td></tr>
+  </tbody>
+</table>
+
+<h3>Questions</h3>
+<div class="q"><b>1 &middot; Traceability audit</b>
+  <p>For each of the four decisions, name the requirement or constraint it serves and state whether the link actually holds. Apply the same test you applied to your own sketches.</p></div>
+<div class="q"><b>2 &middot; Interests</b>
+  <p>For each decision, name who benefits and who bears the cost. Where those are different people, identify the requirement or constraint that made the split possible.</p>
+  <table class="tbl grid">
+    <colgroup><col style="width:46px"><col><col><col></colgroup>
+    <thead><tr><th></th><th>Who benefits</th><th>Who bears the cost</th><th>Which requirement permits it</th></tr></thead>
+    <tbody>
+      <tr><td class="k">1</td><td class="f f1" data-l="Who benefits"></td><td class="f f2" data-l="Who bears the cost"></td><td class="f f3" data-l="Which requirement permits it"></td></tr>
+      <tr><td class="k">2</td><td class="f f1" data-l="Who benefits"></td><td class="f f2" data-l="Who bears the cost"></td><td class="f f3" data-l="Which requirement permits it"></td></tr>
+      <tr><td class="k">3</td><td class="f f1" data-l="Who benefits"></td><td class="f f2" data-l="Who bears the cost"></td><td class="f f3" data-l="Which requirement permits it"></td></tr>
+      <tr><td class="k">4</td><td class="f f1" data-l="Who benefits"></td><td class="f f2" data-l="Who bears the cost"></td><td class="f f3" data-l="Which requirement permits it"></td></tr>
+    </tbody>
+  </table></div>
+<div class="q"><b>3 &middot; Criteria</b>
+  <p>In Lesson&nbsp;5 you drafted a criterion to test whether a design serves a requirement. Write one criterion that would have caught Decision&nbsp;3. Then state what is different in kind about the criterion you have just written.</p></div>
+<div class="q"><b>4 &middot; The analyst&rsquo;s position</b>
+  <p>Every requirement in this brief was written by the client. Which would you push back on, and what would you propose in its place? What does your answer imply about the analyst&rsquo;s role within the problem-solving methodology?</p></div>
+
+<h3>What a strong response does</h3>
+<p class="muted">This is calibration, not a checklist. It describes the shape of a convincing answer, not its content.</p>
+<ul class="bul">
+  <li>Completes the audit in Question&nbsp;1 before judging. A response that opens by calling the design manipulative has skipped the step that makes the case worth discussing.</li>
+  <li>In Question&nbsp;2, separates the canteen&rsquo;s interest from the student user&rsquo;s, and names the specific requirement that permits the divergence: C-A for Decision&nbsp;3, NFR-A for Decision&nbsp;4.</li>
+  <li>In Question&nbsp;3, produces a criterion that measures the user&rsquo;s experience rather than the requirement&rsquo;s satisfaction. A tap-count ceiling on cancellation does this; &ldquo;cancellation is possible&rdquo; does not. The difference is named explicitly.</li>
+  <li>In Question&nbsp;4, treats requirements elicitation as negotiation rather than transcription, and says what the analyst owes the user who never attends the client meeting.</li>
+</ul>
+
+<h3>The point of the case</h3>
+<p>A design can satisfy every stated requirement and still be indefensible, because requirements record what the client wants rather than what the user needs.</p>
+
+<div class="slot" style="margin-top:34px"><p class="t">Slot: the handout</p>
+  <p>Link the four-page PDF for printing: <code>AT2 R5 Designing Within the Rules - Case Study.pdf</code>.</p></div>
+`,
+    notes:['A fifteen-minute task, used either as an extension for students who finish the Lesson&nbsp;5 transfer task early, or as the opening stimulus of the following lesson.',
+           'This is not a lesson about bad design. Every decision in the case traces cleanly to a stated requirement or constraint. It is the method students were taught in Lesson&nbsp;5. The conclusion students should reach is that traceability is necessary but not sufficient: a requirement records what the client wants, which is not the same as what the user needs.'],
+    annotation:['Four design decisions, each tracing cleanly to a stated requirement, that together nudge students toward larger stored balances and place allergen information behind an extra tap. The design is correct by the standard Lesson 5 taught, which is the point: traceability establishes that a decision has a justification, not that the justification is good. Question 3 carries the load, asking for a criterion that would have caught the buried cancellation flow, one that measures the user’s experience rather than the requirement’s satisfaction. That shift turns evaluation criteria into an ethical instrument and extends the UX key knowledge beyond compliance (VCAA, 2024; Gray et al., 2018).',
+      'Limitation: the case collapses if students judge before auditing, so Question 1 is not optional.'],
+    refs:['Emejulu, A., &amp; McGregor, C. (2019). Towards a radical digital citizenship in digital education. <i>Critical Studies in Education, 60</i>(1), 131–147.',
+          'Gray, C. M., Kou, Y., Battles, B., Hoggatt, J., &amp; Toombs, A. L. (2018). The dark (patterns) side of UX design. <i>Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems</i> (pp. 1–14). ACM.',
+          'Victorian Curriculum and Assessment Authority. (2024). <i>VCE Applied Computing study design: Units 1–4 (2025–2028)</i>.'],
+    done:true },
+
+  { id:'r6', n:'R6', title:'Exemplar Pair: School Equipment Borrowing System',
+    blurb:'Two responses to one task. One passes a checklist and should not.',
+    use:'First fifteen minutes of the following lesson, opening the revision window',
+    ped:'Exemplars: comparing two contrasting responses makes a quality standard perceptible (Sadler, 1989)',
+    sub:'An annotated exemplar pair for comparative judgement',
+    facts:{'When used':'The opening of the following lesson, inside the revision window','Duration':'15 minutes',
+           'Supports':'SC1, SC2 and SC3','Key knowledge':'Criteria for evaluating design ideas and the efficiency and effectiveness of solutions (VCAA, 2024)'},
+    quote:'',
+    notes:['Used at the opening of the lesson following the transfer task, inside the revision window.',
+           'Both responses are complete, submitted on time, and use correct terminology. Neither is a beginner’s attempt. Response&nbsp;B is built to pass a checklist, which is why a rubric description alone will not expose it. Sadler (1989) argues a learner can only close a gap they can perceive; an exemplar pair makes the gap perceptible in a way a criterion statement cannot.',
+           'Students judge both responses themselves before reading the annotations. The disagreements between a student’s judgement and the annotations are the most productive material in the discussion.'],
+    body:`
+<h3>The shared task</h3>
+<p>Both students worked on a school sports equipment borrowing system. Equipment is currently signed out on a paper clipboard outside the PE store; items go missing and staff cannot tell what is out. Both chose the same functional requirement and the same constraint, then drew two different design ideas during the 21&nbsp;minute practice phase.</p>
+<table class="tbl">
+  <colgroup><col style="width:78px"><col><col style="width:26%"></colgroup>
+  <thead><tr><th>Ref</th><th>Statement</th><th>Type</th></tr></thead>
+  <tbody>
+    <tr><td class="k">FR2</td><td>A student must be able to see whether an item is available before walking to the PE store.</td><td class="ty" data-l="Type">Functional requirement</td></tr>
+    <tr><td class="k">C2</td><td>The system must work without student logins; the school will not create accounts for a non-curriculum system.</td><td class="ty" data-l="Type">Technical constraint</td></tr>
+  </tbody>
+</table>
+<p class="cap"><b>Reading the labels.</b> <b>FR</b> means a functional requirement: something the system must let a user do. <b>C</b> means a constraint: a limit the solution has to stay inside. The numbers are the labels these students gave them in their own Software Requirements Specification, so FR2 is simply the second functional requirement on their list.</p>
+
+<div class="callout"><b>Before you read the annotations</b>
+  <p>Judge both responses against the five criteria yourself: traceability, divergence, constraint reasoning, evaluation criterion, and attribution. They appear as <b>EC1</b> to <b>EC5</b> in the teacher tables below. Write <i>Not yet</i>, <i>Meeting</i> or <i>Extending</i> beside each criterion for each response, with one reason. Then compare with the teacher annotations. Where your judgement and the annotations disagree, bring that to the discussion. That is the useful part.</p></div>
+
+<h3>Response A</h3>
+<table class="tbl">
+  <colgroup><col style="width:50%"><col></colgroup>
+  <thead><tr><th>Sketch A: wall board outside the PE store</th><th>Sketch B: public web page opened by QR code</th></tr></thead>
+  <tbody><tr>
+    <td data-l="Sketch A: wall board">A display mounted on the wall outside the PE store. Equipment shown as tiles; borrowed items greyed out.</td>
+    <td data-l="Sketch B: public page by QR">The same information on a public web page, opened by scanning QR codes posted at the gym, the oval and the locker bay.</td>
+  </tr></tbody>
+</table>
+
+<h4>The student&rsquo;s annotations</h4>
+<table class="tbl">
+  <colgroup><col style="width:48px"><col style="width:48%"><col></colgroup>
+  <thead><tr><th></th><th>On Sketch A</th><th>On Sketch B</th></tr></thead>
+  <tbody>
+    <tr><td class="k">(a)</td><td data-l="On Sketch A">The board serves FR2 because availability is visible at the moment the student decides, before the walk rather than after it.</td><td data-l="On Sketch B">The QR page serves FR2 away from the PE store, which a fixed board cannot do.</td></tr>
+    <tr><td class="k">(b)</td><td data-l="On Sketch A">C2 ruled out a personal &ldquo;my borrowings&rdquo; view: without logins the system cannot know who is looking. I gave up that feature to stay inside the constraint.</td><td data-l="On Sketch B">C2 still holds, because the page is public and needs no login. The cost is that anyone outside the school can also see what the school owns.</td></tr>
+    <tr><td class="k">(c)</td><td data-l="On Sketch A">Affordance: tiles grey out when borrowed, so &ldquo;out&rdquo; reads without a legend.</td><td data-l="On Sketch B">Navigation: one scan, with no menu to move through.</td></tr>
+  </tbody>
+</table>
+
+<div class="q"><b>Evaluation criterion</b>
+  <p>&ldquo;A design serves FR2 better if a student can check availability without being in sight of the PE store. Sketch&nbsp;A fails this; Sketch&nbsp;B passes.&rdquo;</p></div>
+<div class="q"><b>Attribution</b>
+  <p>&ldquo;Tile grid layout referenced from [URL recorded in design journal]. I kept the grey-out convention because it is a shared convention for unavailable items, and changed the tile size and the labels.&rdquo;</p></div>
+
+<h4>Teacher annotations on Response A</h4>
+<table class="tbl">
+  <colgroup><col style="width:52px"><col style="width:23%"><col style="width:15%"><col></colgroup>
+  <thead><tr><th></th><th>Criterion</th><th>Judgement</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td class="k">EC1</td><td class="cr">Traceability</td><td class="j" data-l="Judgement">Extending</td><td data-l="Why">Annotation (a) names the moment the user needs the information, not just the feature on the screen. That is why it explains the decision instead of repeating the requirement.</td></tr>
+    <tr><td class="k">EC2</td><td class="cr">Divergence</td><td class="j" data-l="Judgement">Extending</td><td data-l="Why">The designs differ in where the information lives and how the user reaches it, not in how they look. With the labels covered, a classmate could still tell them apart.</td></tr>
+    <tr><td class="k">EC3</td><td class="cr">Constraint reasoning</td><td class="j" data-l="Judgement">Extending</td><td data-l="Why">C2 is used to rule an option out, and the rejected option is named. Sketch&nbsp;B goes further and says what the constraint costs.</td></tr>
+    <tr><td class="k">EC4</td><td class="cr">Evaluation criterion</td><td class="j" data-l="Judgement">Extending</td><td data-l="Why">The criterion separates the two designs: one passes, one fails. A criterion that both designs pass is doing no work.</td></tr>
+    <tr><td class="k">EC5</td><td class="cr">Attribution</td><td class="j" data-l="Judgement">Extending</td><td data-l="Why">Separates a shared convention, which anyone may use, from one person&rsquo;s particular expression of it. That is the line copyright draws.</td></tr>
+  </tbody>
+</table>
+
+<h3>Response B</h3>
+<table class="tbl">
+  <colgroup><col style="width:50%"><col></colgroup>
+  <thead><tr><th>Sketch A: phone home screen, list view</th><th>Sketch B: phone home screen, grid view</th></tr></thead>
+  <tbody><tr>
+    <td data-l="Sketch A: list view">A list of equipment items, each with a green or red dot showing availability.</td>
+    <td data-l="Sketch B: grid view">The same items shown as a grid, with a search bar added at the top.</td>
+  </tr></tbody>
+</table>
+
+<h4>The student&rsquo;s annotations</h4>
+<table class="tbl">
+  <colgroup><col style="width:48px"><col style="width:48%"><col></colgroup>
+  <thead><tr><th></th><th>On Sketch A</th><th>On Sketch B</th></tr></thead>
+  <tbody>
+    <tr><td class="k">(a)</td><td data-l="On Sketch A">The list serves FR2 because it shows which items are available.</td><td data-l="On Sketch B">The grid serves FR2 because it also shows which items are available.</td></tr>
+    <tr><td class="k">(b)</td><td data-l="On Sketch A">C2 means there is no login, so the home screen goes straight to the list.</td><td data-l="On Sketch B">C2 means there is no login here either.</td></tr>
+    <tr><td class="k">(c)</td><td data-l="On Sketch A">Alignment: the items are lined up in a column.</td><td data-l="On Sketch B">Contrast: available items are green.</td></tr>
+  </tbody>
+</table>
+
+<div class="q"><b>Evaluation criterion</b>
+  <p>&ldquo;The design serves FR2 if students can find out what is available.&rdquo;</p></div>
+<div class="q"><b>Attribution</b>
+  <p class="muted">None recorded.</p></div>
+
+<h4>Teacher annotations on Response B</h4>
+<table class="tbl">
+  <colgroup><col style="width:52px"><col style="width:23%"><col style="width:15%"><col></colgroup>
+  <thead><tr><th></th><th>Criterion</th><th>Judgement</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td class="k">EC1</td><td class="cr">Traceability</td><td class="j" data-l="Judgement">Not yet</td><td data-l="Why">&ldquo;Serves FR2 because it shows which items are available&rdquo; just repeats the requirement. It describes the feature instead of explaining what the requirement made the student do. Ask: what would be different if FR2 did not exist?</td></tr>
+    <tr><td class="k">EC2</td><td class="cr">Divergence</td><td class="j" data-l="Judgement">Not yet</td><td data-l="Why">List and grid are the same screen, the same navigation and the same opening view. Cover the labels and the two are hard to tell apart. The difference is only in appearance.</td></tr>
+    <tr><td class="k">EC3</td><td class="cr">Constraint reasoning</td><td class="j" data-l="Judgement">Not yet</td><td data-l="Why">C2 is mentioned, not used. It rules nothing out, so it has no effect on the design.</td></tr>
+    <tr><td class="k">EC4</td><td class="cr">Evaluation criterion</td><td class="j" data-l="Judgement">Not yet</td><td data-l="Why">The criterion repeats FR2 and sets no measure. Both sketches pass it equally, so it cannot tell them apart.</td></tr>
+    <tr><td class="k">EC5</td><td class="cr">Attribution</td><td class="j" data-l="Judgement">Not yet</td><td data-l="Why">The grid layout did not come from nowhere, and nothing records where it came from.</td></tr>
+  </tbody>
+</table>
+
+<h3>What actually separates them</h3>
+<p>Response&nbsp;B is complete, neat, submitted on time and uses the correct terminology. It would survive a checklist. Its one flaw is the direction the thinking ran.</p>
+
+<h4>The diagnostic</h4>
+<p>Response&nbsp;A&rsquo;s annotations could not have been written before the design decisions were made, because they record what was given up. Response&nbsp;B&rsquo;s annotations could have been written about almost any design. In Response&nbsp;B the designs came first and the reasons were written to fit them afterwards. Traceability written backwards looks identical to traceability written forwards, until you ask what it ruled out.</p>
+
+<h3>Now revise your own</h3>
+<p>Return to the response you produced in the previous lesson, with your partner&rsquo;s feedback note attached.</p>
+<ul class="bul">
+  <li>Find the annotation of yours that most resembles Response&nbsp;B: the one that describes the design rather than explaining what drove it.</li>
+  <li>Rewrite it so that it names something the requirement or constraint ruled out.</li>
+  <li>Mark the change, and write one line on what you changed and why. This is the entry that goes in your design journal.</li>
+</ul>
+`,
+    annotation:['Two complete responses to the Lesson 5 transfer task: one meeting the criteria, one that would pass a checklist and should not. The weaker response is deliberately not a beginner’s attempt. It is on time, correctly termed and fully annotated, and fails only because its justifications were fitted to the designs afterwards. Sadler (1989) argues a learner cannot close a gap they cannot perceive, and a criterion statement does not make this gap perceptible, whereas an exemplar pair does. Its placement is equally deliberate: feedback becomes formative only when it is used to close a gap (Black &amp; Wiliam, 2009), so the pair opens the following lesson and gives the peer note from Lesson 5 somewhere to go.',
+      'Limitation: exemplars invite mimicry, so both responses use a project unlike any student’s own and the task is to critique rather than to reproduce.'],
+    refs:['Black, P., &amp; Wiliam, D. (2009). Developing the theory of formative assessment. <i>Educational Assessment, Evaluation and Accountability, 21</i>(1), 5–31.',
+          'Hattie, J., &amp; Timperley, H. (2007). The power of feedback. <i>Review of Educational Research, 77</i>(1), 81–112.',
+          'Sadler, D. R. (1989). Formative assessment and the design of instructional systems. <i>Instructional Science, 18</i>(2), 119–144.'],
+    done:true },
+
+  { id:'r7', n:'R7', title:'Professional Learning: VCAA Unit 3 Outcome 2 Briefing',
+    blurb:'The authoritative reading of the outcome this lesson serves, and the gap it leaves.',
+    use:'Watched during planning, before the unit is written',
+    ped:'TPACK: planning integrates technological, pedagogical and content knowledge (Mishra &amp; Koehler, 2006)',
+    sub:'The VCAA on-demand briefing on Unit 3 Outcome 2, Software Development',
+    facts:{'When used':'Teacher preparation, before the unit is planned',
+           'Duration':'One video, with transcript and slides',
+           'Supports':'Planning for SC1, SC2 and SC3',
+           'Key knowledge':'Scope of Unit 3 Outcome 2 and the School-assessed Task (VCAA, 2024)'},
+    quote:'The session states that the School-assessed Task requires evaluation criteria. It does not say how one is written.',
+    body:`
+<h3>What it is</h3>
+<p><i>Background to Unit 3 Outcome 2 Software Development</i>, one of five on-demand videos the VCAA released alongside the 2025 to 2028 Applied Computing study design. Each comes with a transcript and a slide deck, so the content can be searched rather than only watched.</p>
+
+<h3>What it establishes</h3>
+<ul class="bul">
+  <li><b>The outcome statement in full.</b> Students document a problem, need or opportunity, formulate a project plan, document an analysis, and generate design ideas and a preferred design for creating a software solution.</li>
+  <li><b>What is new in this accreditation period.</b> A brief, file management techniques, ideation techniques, Unified Modelling Language tools for use case diagrams, and an updated School-assessed Task.</li>
+  <li><b>What the School-assessed Task must contain.</b> A brief; a project plan showing tasks, times, milestones, dependencies and the critical path; analytical tools; an analysis documented as a software requirements specification; a folio of design ideas and evaluation criteria; and detailed design specifications of the preferred design.</li>
+  <li><b>How much room it needs.</b> The task spans Unit 3 Outcome 2 and Unit 4 Outcome 1, carries 30 per cent of the study score, and is given at least eight to ten weeks of class time.</li>
+</ul>
+
+<h3>Why it was watched first</h3>
+<p>Lesson 5 asks students to turn requirements and constraints into contrasting design ideas. Whether that is inside or outside the outcome is a question only the study design can settle, and the briefing settles it: design ideas and a preferred design sit in Unit 3 Outcome 2, while development does not. Planning from the briefing rather than from a textbook kept the lesson inside the stated scope and kept the five success criteria tied to key knowledge the VCAA names.</p>
+
+<h3>The gap it leaves</h3>
+<p>The session states that the School-assessed Task requires a folio of design ideas and evaluation criteria. It does not say how a criterion should be written, or how to tell a criterion that separates two designs from one that both designs pass. That gap is the reason R5 and R6 exist.</p>
+
+<h3>The session</h3>
+<a class="linkcard" href="https://vcaa.vic.edu.au/professional-learning-programs/vce/vce-applied-computing-software-development-2025" target="_blank" rel="noopener">
+  <b>VCE Applied Computing: Software Development 2025</b>
+  <i>Victorian Curriculum and Assessment Authority. Five on-demand videos, each with a transcript and a slide deck. <i>Background to Unit 3 Outcome 2 Software Development</i> is the third.</i>
+  <span>vcaa.vic.edu.au/professional-learning-programs/vce/vce-applied-computing-software-development-2025</span>
+</a>
+`,
+    annotation:['The authoritative reading of the outcome this lesson sequence serves, used before planning rather than after it. Working from the VCAA briefing rather than from a textbook kept the lesson inside the stated scope, which is design ideas and a preferred design rather than development, and tied each success criterion to key knowledge the study design names. The briefing also exposed the gap this collection answers: it requires evaluation criteria in the School-assessed Task without saying how one is written or what makes it discriminate between designs, which is precisely what R5 and R6 teach.',
+      'Limitation: a briefing states what the study design requires, not how to teach it. It constrains planning rather than guiding it, so it is a boundary check and not a source of pedagogy.'],
+    refs:['Victorian Curriculum and Assessment Authority. (2024). <i>VCE Applied Computing study design: Units 1–4 (2025–2028)</i>.',
+          'Victorian Curriculum and Assessment Authority. (2025a). <i>Background to Unit 3 Outcome 2 Software Development</i> [Video and transcript]. VCE Applied Computing: Software Development 2025 professional learning. https://vcaa.vic.edu.au/professional-learning-programs/vce/vce-applied-computing-software-development-2025'],
+    done:true },
+];
+
+const draft = r => r.done ? '' : '<span class="draft">draft</span>';
+
+function pageHTML(r){
+  let h = '<section class="page" id="page-'+r.id+'">';
+  h += '<span class="eyebrow">Resource '+r.n+'</span>';
+  h += '<h1>'+r.title+'</h1>';
+  h += '<p class="lede">'+r.sub+'</p>';
+  h += '<dl class="facts">' + Object.entries(r.facts).map(([k,v]) =>
+        '<div><dt>'+k+'</dt><dd>'+v+'</dd></div>').join('') + '</dl>';
+  if(r.quote) h += '<blockquote class="quote"><p>'+r.quote+'</p></blockquote>';
+  if(r.notes && r.notes.length)
+    h += '<h2>Teacher notes</h2><div class="annot">'
+       + r.notes.map(p=>'<p>'+p+'</p>').join('') + '</div>';
+  h += '<h2>The resource</h2>';
+  if(r.body) h += '<div class="rbody">'+r.body+'</div>';
+  else (r.slots || [{t:'Slot: the artefact', d:'The resource itself: embed, image or linked file.'}])
+    .forEach(s => { h += '<div class="slot"><p class="t">'+s.t+'</p><p>'+s.d+'</p></div>'; });
+  h += '<h2>Annotation</h2>';
+  h += r.annotation
+     ? '<div class="annot">' + [].concat(r.annotation).map(p=>'<p>'+p+'</p>').join('') + '</div>'
+     : '<div class="slot"><p class="t">Slot: about 100 words</p><p>How it supports the lesson outcomes &middot; its pedagogical purpose and where it sits &middot; its affordances and limits &middot; the theory or research behind it.</p></div>';
+  if(r.refs && r.refs.length)
+    h += '<h2>References</h2><div class="refs">' + r.refs.map(x=>'<p>'+x+'</p>').join('') + '</div>';
+  return h + '</section>';
+}
+
+document.getElementById('respages').innerHTML = RESOURCES.map(pageHTML).join('');
+document.getElementById('resindex').innerHTML = RESOURCES.map(r =>
+  '<a class="row" href="#'+r.id+'">'+
+    '<span class="rn">'+r.n+'</span>'+
+    '<span class="rt"><b>'+r.title+draft(r)+'</b><i>'+r.blurb+'</i></span>'+
+    '<span class="ru">'+r.use+'</span>'+
+    '<span class="rp">'+r.ped+'</span>'+
+  '</a>').join('');
+document.getElementById('ddmenu').insertAdjacentHTML('beforeend',
+  RESOURCES.map(r=>'<a href="#'+r.id+'"><b>'+r.n+'</b><span>'+r.title+'</span></a>').join(''));
+
+/* every bare URL in a reference list becomes a link (lists already marked up are left alone) */
+document.querySelectorAll('.refs p').forEach(p=>{
+  if(p.querySelector('a')) return;
+  p.innerHTML = p.innerHTML.replace(/(https?:\/\/[^\s<]+)/g,
+    '<a href="$1" target="_blank" rel="noopener">$1</a>');
+});
+
+/* ── routing ─────────────────────────────────────────────────────────── */
+const PAGES = ['about','curriculum','resources','reflection','public','others'].concat(RESOURCES.map(r=>r.id));
+const nav = document.getElementById('nav');
+const ddbtn = document.getElementById('ddbtn'), ddmenu = document.getElementById('ddmenu');
+const burger = document.getElementById('burger');
+
+function show(id){
+  if(!PAGES.includes(id)) id = 'about';
+  PAGES.forEach(p=>{ const el=document.getElementById('page-'+p); if(el) el.classList.toggle('active', p===id); });
+  document.querySelectorAll('nav.main a[data-nav]').forEach(a=>{
+    if(a.dataset.nav===id) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  });
+  ddbtn.classList.toggle('on', id==='resources' || RESOURCES.some(r=>r.id===id));
+  closeMenus();
+  window.scrollTo({top:0, behavior:'instant'});
+  const names = {curriculum:'VCE Applied Computing Pathways',resources:'Resources',
+                 reflection:'Teaching Reflection and Pedagogical Analysis',
+                 public:'Public-Facing Contribution',others:'References & AI Use'};
+  const t = RESOURCES.find(r=>r.id===id)?.title || names[id];
+  document.title = id==='about' ? "Colin's Portfolio" : t + " · Colin's Portfolio";
+}
+function closeMenus(){
+  ddmenu.classList.remove('open'); ddbtn.setAttribute('aria-expanded','false');
+  nav.classList.remove('open'); burger.setAttribute('aria-expanded','false');
+}
+ddbtn.addEventListener('click', e=>{ e.stopPropagation();
+  ddbtn.setAttribute('aria-expanded', ddmenu.classList.toggle('open') ? 'true':'false'); });
+burger.addEventListener('click', e=>{ e.stopPropagation();
+  const o = nav.classList.toggle('open');
+  burger.setAttribute('aria-expanded', o ? 'true':'false');
+  if(!o) ddmenu.classList.remove('open'); });
+document.addEventListener('click', e=>{ if(!e.target.closest('.dd') && !e.target.closest('.burger')) closeMenus(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenus(); });
+window.addEventListener('hashchange', ()=> show(location.hash.slice(1)));
+show(location.hash.slice(1));
+</script>
+
+</body>
+</html>
